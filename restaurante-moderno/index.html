@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Restaurante Moderno</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#090909; --card:rgba(255,255,255,.075); --card2:rgba(255,255,255,.04); --text:#fffaf4; --muted:rgba(255,250,244,.72); --accent:#e7b95f; --accent2:#c2410c; --border:rgba(255,255,255,.14); --shadow:0 26px 80px rgba(0,0,0,.45); --radius:26px; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; scroll-padding-top:84px; }
+    body { font-family:"Inter",sans-serif; background: radial-gradient(circle at 15% 15%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 30%), radial-gradient(circle at 85% 20%, color-mix(in srgb, var(--accent2) 20%, transparent), transparent 34%), linear-gradient(180deg,var(--bg),#050505); color:var(--text); line-height:1.65; overflow-x:hidden; }
+    a { color:inherit; text-decoration:none; }
+    .container { width:min(1160px,calc(100% - 40px)); margin:0 auto; }
+    .nav { position:fixed; inset:0 0 auto 0; z-index:20; padding:18px 0; border-bottom:1px solid transparent; transition:.25s ease; }
+    .nav.scrolled { background:rgba(8,8,8,.72); backdrop-filter:blur(18px); border-color:var(--border); padding:12px 0; }
+    .nav-inner { width:min(1220px,calc(100% - 34px)); margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:16px; }
+    .brand { display:flex; align-items:center; gap:12px; font-weight:900; text-transform:uppercase; letter-spacing:.08em; font-size:.82rem; }
+    .mark { width:42px; height:42px; border-radius:15px; display:grid; place-items:center; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#111; box-shadow:0 0 42px color-mix(in srgb,var(--accent) 35%,transparent); }
+    .links { display:flex; gap:18px; list-style:none; }
+    .links a { color:var(--muted); font-size:.88rem; font-weight:800; }
+    .links a:hover { color:var(--accent); }
+    .menu { display:none; width:44px; height:44px; border:1px solid var(--border); background:var(--card2); color:var(--text); border-radius:14px; cursor:pointer; font-weight:900; }
+    .hero { min-height:100vh; display:grid; place-items:center; padding:140px 0 90px; background:linear-gradient(rgba(0,0,0,.36),rgba(0,0,0,.84)), url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=2200&q=80") center/cover fixed; position:relative; isolation:isolate; }
+    .hero::before { content:""; position:absolute; inset:0; z-index:-1; background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px); background-size:72px 72px; mask-image:linear-gradient(to bottom,rgba(0,0,0,.8),transparent 85%); animation:grid 16s linear infinite; }
+    @keyframes grid { from { background-position:0 0; } to { background-position:72px 72px; } }
+    .hero-content { max-width:940px; text-align:center; }
+    .badge { display:inline-flex; padding:10px 16px; border-radius:999px; border:1px solid color-mix(in srgb,var(--accent) 44%,transparent); background:rgba(0,0,0,.36); color:var(--accent); font-weight:900; text-transform:uppercase; letter-spacing:.12em; font-size:.75rem; margin-bottom:24px; backdrop-filter:blur(12px); }
+    h1 { font-family:"Playfair Display",serif; font-size:clamp(3.4rem,9vw,7.8rem); line-height:.88; letter-spacing:-.06em; margin-bottom:24px; }
+    h1 span { color:transparent; background:linear-gradient(135deg,#fff,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; }
+    .hero p { max-width:760px; margin:0 auto 34px; color:var(--muted); font-size:clamp(1rem,2vw,1.22rem); }
+    .btns { display:flex; justify-content:center; gap:14px; flex-wrap:wrap; }
+    .btn { display:inline-flex; justify-content:center; align-items:center; border-radius:999px; padding:14px 22px; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#111; font-weight:900; box-shadow:0 20px 46px color-mix(in srgb,var(--accent) 25%,transparent); transition:transform .25s ease,filter .25s ease; border:0; cursor:pointer; }
+    .btn:hover { transform:translateY(-3px); filter:brightness(1.08); }
+    .btn.secondary { color:var(--text); background:rgba(255,255,255,.06); border:1px solid var(--border); box-shadow:none; }
+    section { padding:100px 0; }
+    .section-head { display:flex; justify-content:space-between; align-items:end; gap:30px; margin-bottom:44px; }
+    .section-head h2 { font-family:"Playfair Display",serif; font-size:clamp(2.2rem,5vw,4.4rem); line-height:.98; letter-spacing:-.045em; }
+    .section-head p { color:var(--muted); max-width:620px; }
+    .about-grid { display:grid; grid-template-columns:1fr .9fr; gap:34px; align-items:center; }
+    .panel { border-radius:var(--radius); background:linear-gradient(180deg,var(--card),var(--card2)); border:1px solid var(--border); box-shadow:var(--shadow); padding:32px; }
+    .panel p { color:var(--muted); margin-bottom:18px; }
+    .image-panel { min-height:470px; border-radius:var(--radius); border:1px solid var(--border); box-shadow:var(--shadow); background:linear-gradient(to top,rgba(0,0,0,.82),transparent),url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=2200&q=80") center/cover; }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+    .card { border-radius:var(--radius); background:linear-gradient(180deg,var(--card),var(--card2)); border:1px solid var(--border); padding:26px; transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease; }
+    .card:hover { transform:translateY(-8px); border-color:color-mix(in srgb,var(--accent) 55%,transparent); box-shadow:var(--shadow); }
+    .icon { width:56px; height:56px; border-radius:18px; display:grid; place-items:center; background:color-mix(in srgb,var(--accent) 15%,transparent); color:var(--accent); font-size:1.55rem; margin-bottom:22px; }
+    .card h3 { font-family:"Playfair Display",serif; font-size:1.55rem; line-height:1.1; margin-bottom:10px; }
+    .card p { color:var(--muted); }
+    .contact-grid { display:grid; grid-template-columns:.85fr 1.15fr; gap:24px; }
+    form { display:grid; gap:14px; }
+    input,select,textarea { width:100%; border:1px solid var(--border); background:rgba(255,255,255,.06); color:var(--text); border-radius:16px; padding:14px 15px; outline:none; }
+    option { background:#111; }
+    textarea { min-height:120px; resize:vertical; }
+    footer { padding:30px 0; border-top:1px solid var(--border); color:var(--muted); background:rgba(0,0,0,.22); }
+    .footer-inner { display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap; }
+    .reveal { opacity:0; transform:translateY(24px); transition:.75s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    @media (max-width:960px) { .links { position:fixed; top:72px; left:18px; right:18px; display:grid; padding:16px; border-radius:22px; background:rgba(10,10,10,.94); border:1px solid var(--border); opacity:0; pointer-events:none; transform:translateY(-16px); transition:.25s ease; } .links.open { opacity:1; pointer-events:auto; transform:translateY(0); } .links a { padding:10px; } .menu { display:block; } .section-head,.about-grid,.contact-grid { display:grid; grid-template-columns:1fr; } .cards { grid-template-columns:repeat(2,1fr); } .image-panel { min-height:350px; } }
+    @media (max-width:620px) { .container { width:min(100% - 26px,1160px); } .hero { background-attachment:scroll; } .cards { grid-template-columns:1fr; } .btns { flex-direction:column; } .btn { width:100%; } }
+  </style>
+</head>
+<body>
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#inicio"><span class="mark">✦</span><span>Restaurante moderno</span></a>
+      <ul class="links" id="links"><li><a href="#inicio">Inicio</a></li><li><a href="#nosotros">Nosotros</a></li><li><a href="#servicios">Servicios</a></li><li><a href="#contacto">Contacto</a></li></ul>
+      <button class="menu" id="menuBtn">☰</button>
+    </div>
+  </nav>
+  <section class="hero" id="inicio"><div class="container hero-content reveal"><div class="badge">Restaurante moderno</div><h1>Restaurante Moderno <span>premium</span>.</h1><p>Una landing gastronómica elegante, visual y directa, pensada para reservas, carta digital y contacto rápido.</p><div class="btns"><a class="btn" href="#contacto">Solicitar información</a><a class="btn secondary" href="#servicios">Ver servicios</a></div></div></section>
+  <section id="nosotros"><div class="container about-grid"><div class="panel reveal"><div class="badge">Quiénes somos</div><h2>Una demo pensada para vender mejor.</h2><p>Este template está armado para mostrar una presencia web moderna, clara y comercial. La estructura se puede adaptar a datos reales, servicios, precios, imágenes y contacto.</p><p>La idea es que el cliente vea una web terminada, no un boceto: estética cuidada, navegación simple, llamadas a la acción y secciones listas para convertir consultas.</p></div><div class="image-panel reveal"></div></div></section>
+  <section id="servicios"><div class="container"><div class="section-head reveal"><div><div class="badge">Servicios</div><h2>Secciones comerciales listas para usar.</h2></div><p>Cards pensadas para comunicar servicios, beneficios o productos de forma visual y directa.</p></div><div class="cards">
+        <article class="card reveal">
+          <div class="icon">🍽️</div>
+          <h3>Carta de autor</h3>
+          <p>Platos modernos con presentación cuidada y sabores de temporada.</p>
+        </article>
+
+        <article class="card reveal">
+          <div class="icon">🍷</div>
+          <h3>Wine bar</h3>
+          <p>Selección de vinos y cocktails para acompañar cada plato.</p>
+        </article>
+
+        <article class="card reveal">
+          <div class="icon">📅</div>
+          <h3>Reservas online</h3>
+          <p>Formulario visual para solicitar mesa en pocos pasos.</p>
+        </article>
+
+        <article class="card reveal">
+          <div class="icon">🎉</div>
+          <h3>Eventos privados</h3>
+          <p>Espacio para cumpleaños, cenas empresariales y celebraciones.</p>
+        </article></div></div></section>
+  <section id="contacto"><div class="container contact-grid"><div class="panel reveal"><div class="badge">Contacto</div><h2>Contacto directo</h2><p><strong>Dirección:</strong> Av. Demo 1234, CABA</p><p><strong>Teléfono:</strong> +54 11 5555-5555</p><p><strong>Email:</strong> contacto@demo.com</p><p><strong>Horarios:</strong> Lunes a sábado · 9:00 a 20:00</p></div><div class="panel reveal"><form id="demoForm"><input type="text" placeholder="Nombre" required><input type="email" placeholder="Email" required><select required><option value="">Motivo de consulta</option><option>Solicitar presupuesto</option><option>Reservar turno</option><option>Consultar disponibilidad</option></select><textarea placeholder="Mensaje" required></textarea><button class="btn" type="submit">Enviar consulta</button></form></div></div></section>
+  <footer><div class="container footer-inner"><span>© 2026 Alexander Fath. Todos los derechos reservados.</span><span>Desarrollado por Alexander Fath</span></div></footer>
+  <script>
+    const nav=document.getElementById('nav'),links=document.getElementById('links'),menuBtn=document.getElementById('menuBtn');
+    window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40)});
+    menuBtn.addEventListener('click',()=>{links.classList.toggle('open')});
+    document.querySelectorAll('.links a').forEach(link=>{link.addEventListener('click',()=>links.classList.remove('open'))});
+    const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}})},{threshold:.14});
+    document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+    document.getElementById('demoForm').addEventListener('submit',e=>{e.preventDefault();alert('Consulta enviada correctamente. Esta es una demo visual.');e.target.reset();});
+  </script>
+</body>
+</html>
