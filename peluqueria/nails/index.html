@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NAILPOP Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Unbounded:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0D0D0F;
+      --bg2: #111115;
+      --pink: #FF2D78;
+      --pink-light: #FF6EA3;
+      --cyan: #00F5D4;
+      --yellow: #FFE83D;
+      --purple: #B14FFF;
+      --white: #F0EFF6;
+      --muted: rgba(240,239,246,0.45);
+      --card-bg: #18181E;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* NOISE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+      opacity: 0.5;
+    }
+
+    /* CURSOR */
+    * { cursor: none; }
+    .cur {
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--pink);
+      position: fixed; pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: transform 0.1s, background 0.2s;
+      mix-blend-mode: difference;
+    }
+    .cur-trail {
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 1.5px solid var(--cyan);
+      position: fixed; pointer-events: none; z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: left 0.18s ease, top 0.18s ease;
+      opacity: 0.5;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 200;
+      padding: 20px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      transition: background 0.4s;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .nav-logo {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.15rem; font-weight: 900;
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .logo-nail { color: var(--pink); }
+    .logo-pop { color: var(--cyan); }
+    .nav-right { display: flex; align-items: center; gap: 32px; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-btn {
+      background: var(--pink); color: var(--bg); border: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; padding: 10px 24px;
+      border-radius: 100px; transition: background 0.2s, transform 0.15s;
+      text-decoration: none;
+    }
+    .nav-btn:hover { background: var(--pink-light); transform: scale(1.04); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      padding: 120px 48px 80px;
+      position: relative; overflow: hidden;
+    }
+
+    /* BG BLOBS */
+    .blob {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); pointer-events: none;
+      animation: blobFloat 8s ease-in-out infinite;
+    }
+    .blob1 { width:500px;height:500px;background:rgba(255,45,120,0.18);top:-100px;right:-80px; }
+    .blob2 { width:400px;height:400px;background:rgba(0,245,212,0.12);bottom:0;left:-100px;animation-delay:3s; }
+    .blob3 { width:300px;height:300px;background:rgba(177,79,255,0.12);top:40%;right:20%;animation-delay:5s; }
+    @keyframes blobFloat {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33% { transform: translate(20px,-30px) scale(1.05); }
+      66% { transform: translate(-15px,20px) scale(0.97); }
+    }
+
+    /* HERO GRID */
+    .hero-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+      align-items: center; width: 100%; max-width: 1200px;
+      position: relative; z-index: 1;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(0,245,212,0.08); border: 1px solid rgba(0,245,212,0.2);
+      border-radius: 100px; padding: 6px 16px;
+      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.15em;
+      color: var(--cyan); text-transform: uppercase; margin-bottom: 28px;
+    }
+    .hero-tag-dot {
+      width: 6px; height: 6px; background: var(--cyan);
+      border-radius: 50%; animation: blink 1.5s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+    .hero-h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(2.8rem, 5.5vw, 6rem);
+      font-weight: 900; line-height: 1;
+      letter-spacing: -0.03em; margin-bottom: 28px;
+    }
+    .hero-h1 .line1 { color: var(--white); display: block; }
+    .hero-h1 .line2 {
+      color: transparent;
+      -webkit-text-stroke: 2px var(--pink);
+      display: block;
+    }
+    .hero-h1 .line3 {
+      background: linear-gradient(90deg, var(--pink), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      display: block;
+    }
+
+    .hero-sub {
+      font-size: 0.85rem; line-height: 1.8;
+      color: var(--muted); max-width: 380px; margin-bottom: 48px;
+    }
+    .hero-btns { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .btn-main {
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: var(--white); border: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 16px 36px;
+      border-radius: 100px; text-decoration: none;
+      position: relative; overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 30px rgba(255,45,120,0.35);
+    }
+    .btn-main:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 50px rgba(255,45,120,0.5);
+    }
+    .btn-secondary {
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em;
+      color: var(--muted); text-decoration: none;
+      display: flex; align-items: center; gap: 10px;
+      transition: color 0.2s;
+    }
+    .btn-secondary:hover { color: var(--white); }
+    .btn-secondary-arrow {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1.5px solid rgba(240,239,246,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .btn-secondary:hover .btn-secondary-arrow {
+      border-color: var(--white); transform: rotate(45deg);
+    }
+
+    /* HERO RIGHT */
+    .hero-right-wrap {
+      position: relative;
+    }
+    .hero-card-main {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px; padding: 40px;
+      position: relative; overflow: hidden;
+    }
+    .hero-card-main::before {
+      content: ''; position: absolute; inset: -1px;
+      background: linear-gradient(135deg, rgba(255,45,120,0.3), transparent 50%, rgba(0,245,212,0.2));
+      border-radius: 24px; z-index: 0;
+      pointer-events: none;
+    }
+    .hero-card-inner { position: relative; z-index: 1; }
+    .hero-nail-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
+      margin-bottom: 28px;
+    }
+    .nail-circle {
+      aspect-ratio: 1/1.4; border-radius: 100px;
+      position: relative; overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+    .nail-circle:hover { transform: scale(1.1) translateY(-4px); }
+    .nc1 { background: linear-gradient(160deg,#FF2D78,#FF6EA3); }
+    .nc2 { background: linear-gradient(160deg,#B14FFF,#7B2FE0); }
+    .nc3 { background: linear-gradient(160deg,#00F5D4,#00C9AC); }
+    .nc4 { background: linear-gradient(160deg,#FFE83D,#FFB800); }
+    .nc5 { background: linear-gradient(160deg,#FF6EA3,#B14FFF); }
+    .nc6 { background: linear-gradient(160deg,#00F5D4,#B14FFF); }
+    .nc7 { background: linear-gradient(160deg,#FF2D78,#B14FFF); }
+    .nc8 { background: linear-gradient(160deg,#FFE83D,#FF2D78); }
+    .nc9 { background: linear-gradient(160deg,#00F5D4,#FF2D78); }
+    .nc10 { background: linear-gradient(160deg,#B14FFF,#FF2D78); }
+    .nail-shine {
+      position: absolute; top: 8%; left: 15%;
+      width: 30%; height: 25%;
+      background: rgba(255,255,255,0.35);
+      border-radius: 50%; transform: rotate(-20deg);
+    }
+
+    .hero-card-label {
+      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+    }
+    .hero-card-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.1rem; font-weight: 700; color: var(--white);
+    }
+
+    .hero-float1 {
+      position: absolute; top: -20px; right: -20px;
+      background: var(--yellow); color: var(--bg);
+      padding: 12px 20px; border-radius: 16px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 0.75rem; font-weight: 700;
+      transform: rotate(6deg);
+      box-shadow: 0 8px 24px rgba(255,232,61,0.3);
+      animation: floatBadge 3s ease-in-out infinite;
+    }
+    .hero-float2 {
+      position: absolute; bottom: 20px; left: -30px;
+      background: var(--card-bg); border: 1px solid rgba(0,245,212,0.3);
+      border-radius: 16px; padding: 16px 20px;
+      animation: floatBadge 3s ease-in-out infinite 1.5s;
+    }
+    .hero-float2-top {
+      font-size: 0.6rem; color: var(--cyan); letter-spacing: 0.15em;
+      text-transform: uppercase; margin-bottom: 4px;
+    }
+    .hero-float2-val {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.2rem; font-weight: 700; color: var(--white);
+    }
+    @keyframes floatBadge {
+      0%,100% { transform: rotate(6deg) translateY(0); }
+      50% { transform: rotate(6deg) translateY(-8px); }
+    }
+    .hero-float2 { animation: floatBadge2 3s ease-in-out infinite 1.5s; }
+    @keyframes floatBadge2 {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* MARQUEE */
+    .marquee-wrap {
+      background: var(--pink); padding: 14px 0;
+      overflow: hidden; position: relative;
+    }
+    .marquee-track {
+      display: flex; gap: 48px;
+      animation: marqueeAnim 16s linear infinite;
+      white-space: nowrap;
+    }
+    .marquee-item {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 0.75rem; font-weight: 700;
+      color: var(--bg); letter-spacing: 0.05em;
+      display: flex; align-items: center; gap: 20px;
+    }
+    .marquee-star { color: rgba(13,13,15,0.4); font-size: 1.2rem; }
+    @keyframes marqueeAnim { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+    /* CONTENEDOR GLOBAL */
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* SERVICIOS */
+    .servicios { padding: 120px 48px; position: relative; }
+    .section-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,45,120,0.08); border: 1px solid rgba(255,45,120,0.2);
+      border-radius: 100px; padding: 6px 16px;
+      font-size: 0.62rem; font-weight: 600; letter-spacing: 0.2em;
+      color: var(--pink); text-transform: uppercase; margin-bottom: 24px;
+    }
+    .section-h2 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -0.02em; margin-bottom: 16px;
+    }
+    .section-h2 span {
+      background: linear-gradient(90deg, var(--pink), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .section-sub {
+      font-size: 0.8rem; color: var(--muted);
+      line-height: 1.8; max-width: 440px; margin-bottom: 72px;
+    }
+
+    .services-wrap {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    }
+    .svc-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 20px; padding: 40px 36px;
+      position: relative; overflow: hidden;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    }
+    .svc-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255,45,120,0.3);
+      box-shadow: 0 20px 60px rgba(255,45,120,0.1);
+    }
+    .svc-card::before {
+      content: ''; position: absolute;
+      top: -60px; right: -60px;
+      width: 160px; height: 160px; border-radius: 50%;
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .svc-card:hover::before { opacity: 0.08; }
+    .svc-card.c1::before { background: var(--pink); }
+    .svc-card.c2::before { background: var(--cyan); }
+    .svc-card.c3::before { background: var(--purple); }
+    .svc-card.c4::before { background: var(--yellow); }
+    .svc-card.c5::before { background: var(--pink-light); }
+    .svc-card.c6::before { background: var(--cyan); }
+
+    .svc-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 24px;
+    }
+    .svc-card.c1 .svc-icon { background: rgba(255,45,120,0.12); }
+    .svc-card.c2 .svc-icon { background: rgba(0,245,212,0.12); }
+    .svc-card.c3 .svc-icon { background: rgba(177,79,255,0.12); }
+    .svc-card.c4 .svc-icon { background: rgba(255,232,61,0.12); }
+    .svc-card.c5 .svc-icon { background: rgba(255,110,163,0.12); }
+    .svc-card.c6 .svc-icon { background: rgba(0,245,212,0.12); }
+
+    .svc-name {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1rem; font-weight: 700; margin-bottom: 10px;
+    }
+    .svc-desc {
+      font-size: 0.73rem; line-height: 1.75; color: var(--muted); margin-bottom: 28px;
+    }
+    .svc-footer { display: flex; justify-content: space-between; align-items: center; }
+    .svc-price {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1rem; font-weight: 700; color: var(--pink);
+    }
+    .svc-badge {
+      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; padding: 4px 12px;
+      border-radius: 100px;
+    }
+    .badge-pop { background: rgba(255,45,120,0.12); color: var(--pink); }
+    .badge-new { background: rgba(0,245,212,0.12); color: var(--cyan); }
+    .badge-hit { background: rgba(177,79,255,0.12); color: var(--purple); }
+
+    /* PROCESO */
+    .proceso { background: var(--bg2); padding: 120px 48px; }
+    .proceso-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+      align-items: center;
+    }
+    .steps { margin-top: 48px; display: flex; flex-direction: column; gap: 32px; }
+    .step {
+      display: flex; gap: 24px; align-items: flex-start;
+      padding: 24px; border-radius: 16px;
+      border: 1px solid transparent;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .step:hover {
+      background: rgba(255,45,120,0.04);
+      border-color: rgba(255,45,120,0.15);
+    }
+    .step-num {
+      min-width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 0.9rem; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .sn1 { background: rgba(255,45,120,0.15); color: var(--pink); }
+    .sn2 { background: rgba(0,245,212,0.15); color: var(--cyan); }
+    .sn3 { background: rgba(177,79,255,0.15); color: var(--purple); }
+    .sn4 { background: rgba(255,232,61,0.15); color: var(--yellow); }
+    .step-content {}
+    .step-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 6px; }
+    .step-desc { font-size: 0.72rem; color: var(--muted); line-height: 1.7; }
+
+    /* VISUAL DEL PROCESO */
+    .proceso-visual {
+      position: relative;
+    }
+    .pv-main {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px; padding: 48px;
+      position: relative; overflow: hidden;
+    }
+    .pv-glow {
+      position: absolute; width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(255,45,120,0.3), transparent 70%);
+      top: -50px; right: -50px; border-radius: 50%;
+      animation: glowPulse 3s ease-in-out infinite;
+    }
+    @keyframes glowPulse { 0%,100%{opacity:0.6} 50%{opacity:1} }
+    .pv-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.5rem; font-weight: 900; margin-bottom: 8px;
+    }
+    .pv-sub { font-size: 0.72rem; color: var(--muted); margin-bottom: 40px; }
+    .color-swatches {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px;
+    }
+    .swatch {
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .swatch:hover {
+      transform: scale(1.2);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .sw1{background:#FF2D78} .sw2{background:#FF6EA3} .sw3{background:#FFE83D}
+    .sw4{background:#00F5D4} .sw5{background:#B14FFF} .sw6{background:#FF9A56}
+    .sw7{background:#1A1A2E} .sw8{background:#E8E8E8} .sw9{background:#FF4444}
+    .sw10{background:#44FF88} .sw11{background:#4488FF} .sw12{background:#FF44CC}
+
+    .pv-stat-row { display: flex; gap: 32px; }
+    .pv-stat {}
+    .pv-stat-n {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 2rem; font-weight: 900; color: var(--pink);
+    }
+    .pv-stat-l { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; margin-top: 4px; }
+
+    /* TESTIMONIOS */
+    .testimonios { padding: 120px 48px; }
+    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .testi-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 20px; padding: 36px;
+      position: relative;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .testi-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0,245,212,0.2);
+    }
+    .testi-quote {
+      font-size: 2.5rem; line-height: 1; color: var(--pink);
+      font-family: Georgia, serif; margin-bottom: 16px;
+    }
+    .testi-text {
+      font-size: 0.78rem; line-height: 1.8; color: var(--muted); margin-bottom: 28px;
+    }
+    .testi-footer { display: flex; align-items: center; gap: 14px; }
+    .testi-avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .ta1 { background: linear-gradient(135deg,#FF2D78,#B14FFF); }
+    .ta2 { background: linear-gradient(135deg,#00F5D4,#B14FFF); }
+    .ta3 { background: linear-gradient(135deg,#FFE83D,#FF2D78); }
+    .testi-name { font-weight: 700; font-size: 0.85rem; }
+    .testi-stars { color: var(--yellow); font-size: 0.7rem; margin-top: 2px; }
+
+    /* CTA */
+    .cta-section {
+      margin: 0 48px 120px;
+      background: linear-gradient(135deg, rgba(255,45,120,0.12), rgba(177,79,255,0.1));
+      border: 1px solid rgba(255,45,120,0.2);
+      border-radius: 32px; padding: 80px 60px;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-glow1 {
+      position: absolute; width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(255,45,120,0.25), transparent 70%);
+      top: -80px; left: -80px; border-radius: 50%;
+    }
+    .cta-glow2 {
+      position: absolute; width: 250px; height: 250px;
+      background: radial-gradient(circle, rgba(0,245,212,0.2), transparent 70%);
+      bottom: -60px; right: -60px; border-radius: 50%;
+    }
+    .cta-inner { position: relative; z-index: 1; }
+    .cta-h2 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 900; line-height: 1.05;
+      margin-bottom: 20px;
+    }
+    .cta-sub { font-size: 0.85rem; color: var(--muted); margin-bottom: 48px; }
+    .cta-btns { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .btn-cta1 {
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: var(--white); font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; padding: 18px 40px; border-radius: 100px;
+      border: none; text-decoration: none;
+      box-shadow: 0 0 40px rgba(255,45,120,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-cta1:hover { transform: translateY(-3px); box-shadow: 0 0 60px rgba(255,45,120,0.6); }
+    .btn-cta2 {
+      background: transparent; color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; padding: 18px 40px; border-radius: 100px;
+      border: 1.5px solid rgba(255,255,255,0.15); text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-cta2:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.04); }
+
+    /* CONTACTO */
+    .contacto { padding: 0 48px 120px; }
+    .contacto-wrap {
+      display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px;
+      align-items: start;
+    }
+    .contacto-info {}
+    .info-blocks { margin-top: 48px; display: flex; flex-direction: column; gap: 24px; }
+    .info-block {
+      display: flex; gap: 18px; align-items: center;
+      padding: 20px 24px; border-radius: 16px;
+      background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05);
+    }
+    .info-block-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .ibi1 { background: rgba(255,45,120,0.1); }
+    .ibi2 { background: rgba(0,245,212,0.1); }
+    .ibi3 { background: rgba(177,79,255,0.1); }
+    .ibi4 { background: rgba(255,232,61,0.1); }
+    .info-block-text {}
+    .info-block-label { font-size: 0.6rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 2px; }
+    .info-block-val { font-weight: 600; font-size: 0.9rem; }
+
+    /* FORM */
+    .contacto-form {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px; padding: 48px;
+    }
+    .form-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.3rem; font-weight: 700; margin-bottom: 32px;
+    }
+    .fform { display: flex; flex-direction: column; gap: 20px; }
+    .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .finput-wrap { position: relative; }
+    .finput-wrap label {
+      display: block; font-size: 0.62rem; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 8px;
+    }
+    .finput-wrap input, .finput-wrap select, .finput-wrap textarea {
+      width: 100%; background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem; padding: 14px 18px; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none;
+    }
+    .finput-wrap textarea { resize: none; height: 110px; }
+    .finput-wrap input:focus, .finput-wrap select:focus, .finput-wrap textarea:focus {
+      border-color: var(--pink);
+      box-shadow: 0 0 0 3px rgba(255,45,120,0.1);
+    }
+    .finput-wrap select option { background: var(--card-bg); }
+
+    .btn-form {
+      width: 100%;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: var(--white); border: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; padding: 18px;
+      border-radius: 12px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 30px rgba(255,45,120,0.3);
+    }
+    .btn-form:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(255,45,120,0.5);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 40px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-logo {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.1rem; font-weight: 900;
+    }
+    .footer-copy {
+      font-size: 0.68rem; color: var(--muted);
+    }
+    .footer-socials { display: flex; gap: 16px; }
+    .social-btn {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .social-btn:hover { background: rgba(255,45,120,0.15); border-color: rgba(255,45,120,0.3); }
+
+    /* LOADER */
+    .loader {
+      position: fixed; inset: 0; z-index: 1000;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 20px;
+      transition: opacity 0.6s, visibility 0.6s;
+    }
+    .loader.gone { opacity: 0; visibility: hidden; }
+    .loader-logo {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 2.5rem; font-weight: 900;
+    }
+    .loader-logo .lp { color: var(--pink); }
+    .loader-logo .lc { color: var(--cyan); }
+    .loader-progress {
+      width: 200px; height: 3px; background: rgba(255,255,255,0.08);
+      border-radius: 100px; overflow: hidden;
+    }
+    .loader-bar {
+      height: 100%; width: 0;
+      background: linear-gradient(90deg, var(--pink), var(--purple));
+      border-radius: 100px;
+      animation: loadProgress 1.6s ease forwards;
+    }
+    @keyframes loadProgress { to { width: 100%; } }
+
+    /* SCROLL REVEAL */
+    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.show { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    .reveal-d3 { transition-delay: 0.3s; }
+
+    @media (max-width: 900px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 20px 60px; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .services-wrap { grid-template-columns: 1fr; }
+      .proceso-grid { grid-template-columns: 1fr; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .cta-section { margin: 0 20px 80px; padding: 56px 24px; }
+      .contacto { padding: 0 20px 80px; }
+      .contacto-wrap { grid-template-columns: 1fr; }
+      .frow { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 16px; padding: 28px 20px; }
+      .servicios, .proceso, .testimonios { padding: 80px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOADER -->
+  <div class="loader" id="loader">
+    <div class="loader-logo"><span class="lp">NAIL</span><span class="lc">POP</span></div>
+    <div class="loader-progress"><div class="loader-bar"></div></div>
+  </div>
+
+  <!-- CURSOR -->
+  <div class="cur" id="cur"></div>
+  <div class="cur-trail" id="curTrail"></div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" class="nav-logo"><span class="logo-nail">NAIL</span><span class="logo-pop">POP</span></a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#proceso">Proceso</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+      <a href="#contacto" class="nav-btn">Reservar →</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+    <div class="hero-grid">
+      <div class="hero-left">
+        <div class="hero-tag">
+          <span class="hero-tag-dot"></span>
+          Studio disponible · Palermo, CABA
+        </div>
+        <h1 class="hero-h1">
+          <span class="line1">TUS</span>
+          <span class="line2">UÑAS,</span>
+          <span class="line3">TU MUNDO</span>
+        </h1>
+        <p class="hero-sub">Diseños únicos, técnicas premium y una experiencia que va mucho más allá del esmalte. Bienvenida a NAILPOP Studio.</p>
+        <div class="hero-btns">
+          <a href="#contacto" class="btn-main">Pedir Turno ✦</a>
+          <a href="#servicios" class="btn-secondary">
+            Ver servicios
+            <span class="btn-secondary-arrow">↗</span>
+          </a>
+        </div>
+      </div>
+      <div class="hero-right-wrap">
+        <div class="hero-float1">✦ NAILPOP</div>
+        <div class="hero-card-main">
+          <div class="hero-card-inner">
+            <div class="hero-nail-grid">
+              <div class="nail-circle nc1"><div class="nail-shine"></div></div>
+              <div class="nail-circle nc2"><div class="nail-shine"></div></div>
+              <div class="nail-circle nc3"><div class="nail-shine"></div></div>
+              <div class="nail-circle nc4"><div class="nail-shine"></div></div>
+              <div class="nail-circle nc5"><div class="nail-shine"></div></div>
+              <div class="nail-circle nc6"><div class="nail-shine"></div></div>
+              <div class="nail-circle nc7"><div class="nail-shine"></div></div>
+              <div class="nail-circle nc8"><div class="nail-shine"></div></div>
+              <div class="nail-circle nc9"><div class="nail-shine"></div></div>
+              <div class="nail-circle nc10"><div class="nail-shine"></div></div>
+            </div>
+            <div class="hero-card-label">Colección actual</div>
+            <div class="hero-card-title">+200 colores & diseños</div>
+          </div>
+        </div>
+        <div class="hero-float2">
+          <div class="hero-float2-top">Clientas este mes</div>
+          <div class="hero-float2-val">348 ✦</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span class="marquee-item"><span class="marquee-star">✦</span> Gel UV</span>
+      <span class="marquee-item"><span class="marquee-star">✦</span> Nail Art</span>
+      <span class="marquee-item"><span class="marquee-star">✦</span> Acrílicas</span>
+      <span class="marquee-item"><span class="marquee-star">✦</span> Press On</span>
+      <span class="marquee-item"><span class="marquee-star">✦</span> Chrome</span>
+      <span class="marquee-item"><span class="marquee-star">✦</span> French</span>
+      <span class="marquee-item"><span class="marquee-star">✦</span> Soft Gel</span>
+      <span class="marquee-item"><span class="marquee-star">✦</span> Gel UV</span>
+      <span class="marquee-item"><span class="marquee-star">✦</span> Nail Art</span>
+      <span class="marquee-item"><span class="marquee-star">✦</span> Acrílicas</span>
+      <span class="marquee-item"><span class="marquee-star">✦</span> Press On</span>
+      <span class="marquee-item"><span class="marquee-star">✦</span> Chrome</span>
+      <span class="marquee-item"><span class="marquee-star">✦</span> French</span>
+      <span class="marquee-item"><span class="marquee-star">✦</span> Soft Gel</span>
+    </div>
+  </div>
+
+  <!-- SERVICIOS -->
+  <section class="servicios reveal" id="servicios">
+  <div class="section-inner">
+    <div class="section-tag">✦ Servicios</div>
+    <h2 class="section-h2">Todo para tus<br><span>uñas perfectas</span></h2>
+    <p class="section-sub">Desde diseños simples hasta nail art elaborado, trabajamos con productos de primera calidad y técnicas actualizadas.</p>
+    <div class="services-wrap">
+      <div class="svc-card c1 reveal reveal-d1">
+        <div class="svc-icon">💅</div>
+        <div class="svc-name">Esmaltado Gel UV</div>
+        <p class="svc-desc">Esmaltado semipermanente que dura hasta 3 semanas sin astillarse. Curado bajo lámpara UV para un acabado espejo.</p>
+        <div class="svc-footer">
+          <div class="svc-price">$6.500</div>
+          <span class="svc-badge badge-pop">Popular</span>
+        </div>
+      </div>
+      <div class="svc-card c2 reveal reveal-d2">
+        <div class="svc-icon">🎨</div>
+        <div class="svc-name">Nail Art Personalizado</div>
+        <p class="svc-desc">Diseños únicos: florales, geométricos, abstractos, personajes o lo que imagines. Traé tu referencia o diseñamos juntas.</p>
+        <div class="svc-footer">
+          <div class="svc-price">desde $4.000</div>
+          <span class="svc-badge badge-new">Nuevo</span>
+        </div>
+      </div>
+      <div class="svc-card c3 reveal reveal-d3">
+        <div class="svc-icon">✨</div>
+        <div class="svc-name">Uñas Acrílicas</div>
+        <p class="svc-desc">Extensiones de acrílico para largo y forma personalizados. Incluye esculpido, limado y esmalte gel de color.</p>
+        <div class="svc-footer">
+          <div class="svc-price">$14.000</div>
+          <span class="svc-badge badge-hit">Hit</span>
+        </div>
+      </div>
+      <div class="svc-card c4 reveal">
+        <div class="svc-icon">🪩</div>
+        <div class="svc-name">Chrome & Efecto Espejo</div>
+        <p class="svc-desc">El finish metálico más tendencia. Aplicación de polvo chrome sobre gel para un brillo que no pasa desapercibido.</p>
+        <div class="svc-footer">
+          <div class="svc-price">$9.000</div>
+          <span class="svc-badge badge-new">Tendencia</span>
+        </div>
+      </div>
+      <div class="svc-card c5 reveal reveal-d1">
+        <div class="svc-icon">🌸</div>
+        <div class="svc-name">French & Baby Boomer</div>
+        <p class="svc-desc">Clásico reinventado. French tradicional, colorido o degradado baby boomer. Elegancia que no pasa de moda.</p>
+        <div class="svc-footer">
+          <div class="svc-price">$8.000</div>
+          <span class="svc-badge badge-pop">Clásico</span>
+        </div>
+      </div>
+      <div class="svc-card c6 reveal reveal-d2">
+        <div class="svc-icon">💎</div>
+        <div class="svc-name">Soft Gel & Polygel</div>
+        <p class="svc-desc">Extensiones livianas y ultraflexibles. Tecnología de última generación para un resultado natural y duradero.</p>
+        <div class="svc-footer">
+          <div class="svc-price">$16.000</div>
+          <span class="svc-badge badge-hit">Premium</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>
+
+  <!-- PROCESO -->
+  <section class="proceso reveal" id="proceso">
+  <div class="section-inner">
+    <div class="proceso-grid">
+      <div>
+        <div class="section-tag">✦ Cómo trabajamos</div>
+        <h2 class="section-h2">Tu experiencia<br><span>paso a paso</span></h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num sn1">01</div>
+            <div class="step-content">
+              <div class="step-title">Elegís tu diseño</div>
+              <p class="step-desc">Revisamos el catálogo juntas o traés tu referencia de redes. Sin presiones, a tu ritmo.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num sn2">02</div>
+            <div class="step-content">
+              <div class="step-title">Preparación & cuidado</div>
+              <p class="step-desc">Hidratación, cutículas y preparación de la uña natural para el mejor resultado posible.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num sn3">03</div>
+            <div class="step-content">
+              <div class="step-title">Magia en acción</div>
+              <p class="step-desc">Aplicación con técnica precisa y productos de calidad certificada. El detalle marca la diferencia.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num sn4">04</div>
+            <div class="step-content">
+              <div class="step-title">¡Listo para mostrar!</div>
+              <p class="step-desc">Terminación, top coat y consejos de cuidado para que dure lo más posible.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="proceso-visual reveal">
+        <div class="pv-main">
+          <div class="pv-glow"></div>
+          <div class="pv-title">Paleta del mes</div>
+          <p class="pv-sub">Colores de temporada seleccionados por nuestras artistas</p>
+          <div class="color-swatches">
+            <div class="swatch sw1"></div>
+            <div class="swatch sw2"></div>
+            <div class="swatch sw3"></div>
+            <div class="swatch sw4"></div>
+            <div class="swatch sw5"></div>
+            <div class="swatch sw6"></div>
+            <div class="swatch sw7"></div>
+            <div class="swatch sw8"></div>
+            <div class="swatch sw9"></div>
+            <div class="swatch sw10"></div>
+            <div class="swatch sw11"></div>
+            <div class="swatch sw12"></div>
+          </div>
+          <div class="pv-stat-row">
+            <div class="pv-stat">
+              <div class="pv-stat-n">200+</div>
+              <div class="pv-stat-l">Colores disponibles</div>
+            </div>
+            <div class="pv-stat">
+              <div class="pv-stat-n">50+</div>
+              <div class="pv-stat-l">Diseños exclusivos</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section class="testimonios reveal" id="reviews">
+  <div class="section-inner">
+    <div class="section-tag">✦ Reviews</div>
+    <h2 class="section-h2" style="margin-bottom:16px">Lo que dicen<br><span>nuestras clientas</span></h2>
+    <p class="section-sub" style="margin-bottom:60px">Más de 1.200 reseñas de 5 estrellas en Instagram y Google.</p>
+    <div class="testi-grid">
+      <div class="testi-card reveal reveal-d1">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">Fui con una referencia bastante difícil y quedaron EXACTAS. Soy clienta fija de acá en adelante. El ambiente también es increíble.</p>
+        <div class="testi-footer">
+          <div class="testi-avatar ta1">👩</div>
+          <div>
+            <div class="testi-name">Valentina R.</div>
+            <div class="testi-stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-d2">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">El esmaltado me duró más de 3 semanas sin chips. Probé mil lugares antes y acá definitivamente encontré mi studio fijo.</p>
+        <div class="testi-footer">
+          <div class="testi-avatar ta2">👩‍🦱</div>
+          <div>
+            <div class="testi-name">Camila S.</div>
+            <div class="testi-stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-d3">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">Las polygel son una locura, ligerísimas y naturales. Me las hice para un evento y recibí halagos toda la noche. NAILPOP is the best!</p>
+        <div class="testi-footer">
+          <div class="testi-avatar ta3">👩‍🦰</div>
+          <div>
+            <div class="testi-name">Lucía M.</div>
+            <div class="testi-stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-section reveal">
+    <div class="cta-glow1"></div>
+    <div class="cta-glow2"></div>
+    <div class="cta-inner">
+      <h2 class="cta-h2">¿Lista para tus<br>uñas soñadas? ✦</h2>
+      <p class="cta-sub">Turnos disponibles esta semana. Reservá ahora y recibí un 10% de descuento en tu primera visita.</p>
+      <div class="cta-btns">
+        <a href="#contacto" class="btn-cta1">Reservar turno ahora</a>
+        <a href="https://wa.me/5491145678900" class="btn-cta2">WhatsApp directo →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACTO -->
+  <section class="contacto reveal" id="contacto">
+  <div class="section-inner">
+    <div class="contacto-wrap">
+      <div class="contacto-info">
+        <div class="section-tag">✦ Contacto</div>
+        <h2 class="section-h2" style="font-size:2rem; margin-bottom:8px">Hablemos<br><span>hoy mismo</span></h2>
+        <div class="info-blocks">
+          <div class="info-block">
+            <div class="info-block-icon ibi1">📍</div>
+            <div class="info-block-text">
+              <div class="info-block-label">Dirección</div>
+              <div class="info-block-val">Palermo Soho, CABA</div>
+            </div>
+          </div>
+          <div class="info-block">
+            <div class="info-block-icon ibi2">⏰</div>
+            <div class="info-block-text">
+              <div class="info-block-label">Horario</div>
+              <div class="info-block-val">Lun–Sáb de 10 a 20hs</div>
+            </div>
+          </div>
+          <div class="info-block">
+            <div class="info-block-icon ibi3">💬</div>
+            <div class="info-block-text">
+              <div class="info-block-label">WhatsApp</div>
+              <div class="info-block-val">+54 11 4567-8900</div>
+            </div>
+          </div>
+          <div class="info-block">
+            <div class="info-block-icon ibi4">📸</div>
+            <div class="info-block-text">
+              <div class="info-block-label">Instagram</div>
+              <div class="info-block-val">@nailpopstudio</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="contacto-form">
+        <div class="form-title">Pedí tu turno ✦</div>
+        <div class="fform">
+          <div class="frow">
+            <div class="finput-wrap">
+              <label>Nombre</label>
+              <input type="text" placeholder="Tu nombre"/>
+            </div>
+            <div class="finput-wrap">
+              <label>Teléfono</label>
+              <input type="tel" placeholder="+54 11 0000-0000"/>
+            </div>
+          </div>
+          <div class="finput-wrap">
+            <label>Servicio</label>
+            <select>
+              <option>¿Qué servicio querés?</option>
+              <option>Esmaltado Gel UV</option>
+              <option>Nail Art</option>
+              <option>Uñas Acrílicas</option>
+              <option>Chrome & Espejo</option>
+              <option>French / Baby Boomer</option>
+              <option>Soft Gel / Polygel</option>
+            </select>
+          </div>
+          <div class="frow">
+            <div class="finput-wrap">
+              <label>Fecha</label>
+              <input type="date"/>
+            </div>
+            <div class="finput-wrap">
+              <label>Horario preferido</label>
+              <select>
+                <option>Seleccionar</option>
+                <option>10:00 – 12:00</option>
+                <option>12:00 – 14:00</option>
+                <option>14:00 – 16:00</option>
+                <option>16:00 – 18:00</option>
+                <option>18:00 – 20:00</option>
+              </select>
+            </div>
+          </div>
+          <div class="finput-wrap">
+            <label>¿Algo más que quieras contarnos?</label>
+            <textarea placeholder="Describí tu diseño soñado, referencia, etc..."></textarea>
+          </div>
+          <button class="btn-form">Enviar solicitud ✦</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">
+      <span class="logo-nail">NAIL</span><span class="logo-pop">POP</span>
+    </div>
+    <div class="footer-copy">© 2025 NAILPOP Studio · Todos los derechos reservados</div>
+    <div class="footer-socials">
+      <a class="social-btn" href="#">📸</a>
+      <a class="social-btn" href="#">💬</a>
+      <a class="social-btn" href="#">🎵</a>
+    </div>
+  </footer>
+
+  <script>
+    // Loader
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('gone');
+      }, 1700);
+    });
+
+    // Cursor
+    const cur = document.getElementById('cur');
+    const trail = document.getElementById('curTrail');
+    let tx = 0, ty = 0;
+    document.addEventListener('mousemove', e => {
+      cur.style.left = e.clientX + 'px';
+      cur.style.top = e.clientY + 'px';
+      tx = e.clientX; ty = e.clientY;
+    });
+    setInterval(() => {
+      trail.style.left = tx + 'px';
+      trail.style.top = ty + 'px';
+    }, 60);
+    document.querySelectorAll('a, button, .svc-card, .nail-circle').forEach(el => {
+      el.addEventListener('mouseenter', () => { cur.style.transform = 'translate(-50%,-50%) scale(2.5)'; });
+      el.addEventListener('mouseleave', () => { cur.style.transform = 'translate(-50%,-50%) scale(1)'; });
+    });
+
+    // Nav scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.style.background = window.scrollY > 50
+        ? 'rgba(13,13,15,0.92)' : 'transparent';
+      nav.style.backdropFilter = window.scrollY > 50 ? 'blur(24px)' : 'none';
+    });
+
+    // Scroll reveal
+    const ro = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+    // Nail hover rainbow
+    document.querySelectorAll('.nail-circle').forEach(nail => {
+      nail.addEventListener('mouseover', () => {
+        const colors = [
+          'linear-gradient(160deg,#FF2D78,#FFE83D)',
+          'linear-gradient(160deg,#00F5D4,#B14FFF)',
+          'linear-gradient(160deg,#FFE83D,#FF2D78)',
+          'linear-gradient(160deg,#B14FFF,#00F5D4)',
+        ];
+        nail.style.background = colors[Math.floor(Math.random() * colors.length)];
+      });
+    });
+  </script>
+</body>
+</html>
