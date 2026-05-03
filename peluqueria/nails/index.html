@@ -253,28 +253,9 @@
       box-shadow: 0 8px 24px rgba(255,232,61,0.3);
       animation: floatBadge 3s ease-in-out infinite;
     }
-    .hero-float2 {
-      position: absolute; bottom: 20px; left: -30px;
-      background: var(--card-bg); border: 1px solid rgba(0,245,212,0.3);
-      border-radius: 16px; padding: 16px 20px;
-      animation: floatBadge 3s ease-in-out infinite 1.5s;
-    }
-    .hero-float2-top {
-      font-size: 0.6rem; color: var(--cyan); letter-spacing: 0.15em;
-      text-transform: uppercase; margin-bottom: 4px;
-    }
-    .hero-float2-val {
-      font-family: 'Unbounded', sans-serif;
-      font-size: 1.2rem; font-weight: 700; color: var(--white);
-    }
     @keyframes floatBadge {
       0%,100% { transform: rotate(6deg) translateY(0); }
       50% { transform: rotate(6deg) translateY(-8px); }
-    }
-    .hero-float2 { animation: floatBadge2 3s ease-in-out infinite 1.5s; }
-    @keyframes floatBadge2 {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
     }
 
     /* MARQUEE */
@@ -770,10 +751,6 @@
             <div class="hero-card-label">Colección actual</div>
             <div class="hero-card-title">+200 colores & diseños</div>
           </div>
-        </div>
-        <div class="hero-float2">
-          <div class="hero-float2-top">Clientas este mes</div>
-          <div class="hero-float2-val">348 ✦</div>
         </div>
       </div>
     </div>
