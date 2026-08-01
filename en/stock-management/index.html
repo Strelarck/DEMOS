@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sistema de Gestión | Admin Dashboard</title>
+  <title>Management System | Admin Dashboard</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -454,31 +454,31 @@
   <div class="modal-overlay" id="productModal">
     <div class="modal">
       <div class="modal-header">
-        <h2 class="section-title" style="margin:0;">Nuevo Producto</h2>
+        <h2 class="section-title" style="margin:0;">New Product</h2>
         <button class="modal-close" id="closeModal">&times;</button>
       </div>
       <form id="productForm">
         <div class="form-group">
-          <label>Nombre del Producto</label>
-          <input type="text" id="pName" required placeholder="Ej: Auriculares Bluetooth">
+          <label>Nombre del Product</label>
+          <input type="text" id="pName" required placeholder="E.g.: Bluetooth Headphones">
         </div>
         <div class="form-group">
-          <label>SKU (Código)</label>
-          <input type="text" id="pSku" required placeholder="Ej: AUD-BT-001">
+          <label>SKU (Code)</label>
+          <input type="text" id="pSku" required placeholder="E.g.: HDPH-BT-001">
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
           <div class="form-group">
-            <label>Precio ($)</label>
-            <input type="number" id="pPrice" required placeholder="Ej: 45000">
+            <label>Price ($)</label>
+            <input type="number" id="pPrice" required placeholder="E.g.: 45000">
           </div>
           <div class="form-group">
-            <label>Stock Inicial</label>
-            <input type="number" id="pStock" required placeholder="Ej: 50">
+            <label>Initial Stock</label>
+            <input type="number" id="pStock" required placeholder="E.g.: 50">
           </div>
         </div>
         <div class="modal-actions">
-          <button type="button" class="btn btn-secondary" id="cancelModal">Cancelar</button>
-          <button type="submit" class="btn">Guardar Producto</button>
+          <button type="button" class="btn btn-secondary" id="cancelModal">Cancel</button>
+          <button type="submit" class="btn">Guardar Product</button>
         </div>
       </form>
     </div>
@@ -487,9 +487,9 @@
   <div class="top-bar">
     <a href="../index.html" class="back-btn">
       <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-      Volver a otros proyectos
+      Back to other projects
     </a>
-    <a href="../en/stock-management/index.html" class="back-btn" style="color:var(--primary);">EN</a>
+    <a href="../../stock-management/index.html" class="back-btn" style="color:var(--primary);">ES</a>
   </div>
 
   <div class="dashboard-wrapper">
@@ -508,15 +508,15 @@
       </a></li>
       <li><a href="#">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-        Inventario
+        Inventory
       </a></li>
       <li><a href="#">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-        Ventas
+        Sales
       </a></li>
       <li><a href="#">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-        Clientes
+        Customers
       </a></li>
     </ul>
   </aside>
@@ -524,12 +524,12 @@
   <main>
     <header>
       <div class="search-bar">
-        <input type="text" placeholder="Buscar productos, SKUs...">
+        <input type="text" placeholder="Search products, SKUs...">
       </div>
       <div class="header-actions">
         <button class="btn" id="openModalBtn">
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg>
-          Nuevo Producto
+          New Product
         </button>
         <div class="user-profile">
           <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80" alt="Admin" style="width:100%; height:100%; object-fit:cover;">
@@ -542,35 +542,35 @@
       <!-- Metrics -->
       <div class="metrics-grid">
         <div class="metric-card">
-          <div class="metric-title">Ingresos Mensuales</div>
+          <div class="metric-title">Monthly Revenue</div>
           <div class="metric-value">$ 1.485.000</div>
           <div class="metric-change change-positive">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
-            +14.5% desde el último mes
+            +14.5% since last month
           </div>
         </div>
         <div class="metric-card">
-          <div class="metric-title">Stock Total (Unidades)</div>
+          <div class="metric-title">Total Stock (Units)</div>
           <div class="metric-value" id="totalStockMetric">1,248</div>
           <div class="metric-change change-positive">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
-            Abastecido
+            Fully Stocked
           </div>
         </div>
         <div class="metric-card">
-          <div class="metric-title">Ventas Hoy</div>
+          <div class="metric-title">Sales Hoy</div>
           <div class="metric-value">42</div>
           <div class="metric-change change-negative">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-            -2.4% vs. ayer
+            -2.4% vs. yesterday
           </div>
         </div>
         <div class="metric-card">
-          <div class="metric-title">Nuevos Clientes</div>
+          <div class="metric-title">Nuevos Customers</div>
           <div class="metric-value">128</div>
           <div class="metric-change change-positive">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
-            +18% esta semana
+            +18% this week
           </div>
         </div>
       </div>
@@ -581,8 +581,8 @@
         <!-- Chart -->
         <div class="panel">
           <div class="panel-header">
-            <h3 class="section-title" style="margin:0;">Evolución de Ingresos</h3>
-            <button class="btn-secondary" style="padding:4px 12px; border-radius:6px; font-size:0.8rem;">Esta semana</button>
+            <h3 class="section-title" style="margin:0;">Revenue Evolution</h3>
+            <button class="btn-secondary" style="padding:4px 12px; border-radius:6px; font-size:0.8rem;">This week</button>
           </div>
           <div class="chart-container">
             <canvas id="salesChart"></canvas>
@@ -591,46 +591,46 @@
 
         <!-- Latest Sales -->
         <div class="panel">
-          <h3 class="section-title">Últimas Transacciones</h3>
+          <h3 class="section-title">Latest Transactions</h3>
           <ul class="sales-list" id="salesList">
             <li class="sale-item">
               <div class="sale-info">
-                <h4>Teclado Mecánico RGB</h4>
-                <p>Hace 12 min · Juan Pérez</p>
+                <h4>RGB Mechanical Keyboard</h4>
+                <p>12 mins ago · Juan Pérez</p>
               </div>
               <div style="text-align:right;">
                 <div class="sale-amount">$85.000</div>
-                <div class="sale-status status-completed">Completado</div>
+                <div class="sale-status status-completed">Completed</div>
               </div>
             </li>
             <li class="sale-item">
               <div class="sale-info">
-                <h4>Monitor 24" IPS</h4>
-                <p>Hace 45 min · María López</p>
+                <h4>24" IPS Monitor</h4>
+                <p>45 mins ago · Tueía López</p>
               </div>
               <div style="text-align:right;">
                 <div class="sale-amount">$210.000</div>
-                <div class="sale-status status-completed">Completado</div>
+                <div class="sale-status status-completed">Completed</div>
               </div>
             </li>
             <li class="sale-item">
               <div class="sale-info">
-                <h4>Mouse Inalámbrico</h4>
-                <p>Hace 2 horas · Carlos M.</p>
+                <h4>Wireless Mouse</h4>
+                <p>2 hours ago · Carlos M.</p>
               </div>
               <div style="text-align:right;">
                 <div class="sale-amount">$15.500</div>
-                <div class="sale-status status-pending">Pendiente</div>
+                <div class="sale-status status-pending">Pending</div>
               </div>
             </li>
             <li class="sale-item">
               <div class="sale-info">
-                <h4>Cable HDMI 2m</h4>
-                <p>Hace 5 horas · Local</p>
+                <h4>2m HDMI Cable</h4>
+                <p>5 hours ago · Local</p>
               </div>
               <div style="text-align:right;">
                 <div class="sale-amount">$4.500</div>
-                <div class="sale-status status-completed">Completado</div>
+                <div class="sale-status status-completed">Completed</div>
               </div>
             </li>
           </ul>
@@ -640,16 +640,16 @@
       <!-- Inventory Table -->
       <div class="panel">
         <div class="panel-header">
-          <h3 class="section-title" style="margin:0;">Inventario Actual</h3>
+          <h3 class="section-title" style="margin:0;">Inventory Actual</h3>
         </div>
         <table>
           <thead>
             <tr>
-              <th>Producto</th>
+              <th>Product</th>
               <th>SKU</th>
-              <th>Precio Venta</th>
-              <th>Stock Restante</th>
-              <th>Estado</th>
+              <th>Sale Price</th>
+              <th>Remaining Stock</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody id="inventoryTable">
@@ -661,27 +661,27 @@
               <td>NTBK-I5-001</td>
               <td>$950.000</td>
               <td>12 un.</td>
-              <td><span class="sale-status status-completed">En Stock</span></td>
+              <td><span class="sale-status status-completed">In Stock</span></td>
             </tr>
             <tr>
               <td>
                 <span class="table-img"></span>
-                <strong>Auriculares Gamer 7.1</strong>
+                <strong>7.1 Gaming Headset</strong>
               </td>
               <td>AUD-GMR-071</td>
               <td>$45.000</td>
               <td>4 un.</td>
-              <td><span class="sale-status status-pending">Stock Bajo</span></td>
+              <td><span class="sale-status status-pending">Low Stock</span></td>
             </tr>
             <tr>
               <td>
                 <span class="table-img"></span>
-                <strong>Webcam 1080p HD</strong>
+                <strong>1080p HD Webcam</strong>
               </td>
               <td>CAM-1080-HD</td>
               <td>$35.000</td>
               <td>28 un.</td>
-              <td><span class="sale-status status-completed">En Stock</span></td>
+              <td><span class="sale-status status-completed">In Stock</span></td>
             </tr>
           </tbody>
         </table>
@@ -703,9 +703,9 @@
     new Chart(ctx, {
       type: 'line',
       data: {
-        labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
         datasets: [{
-          label: 'Ingresos ($)',
+          label: 'Revenue ($)',
           data: [120000, 195000, 150000, 240000, 210000, 320000, 280000],
           borderColor: '#2563EB',
           backgroundColor: gradient,
@@ -788,7 +788,7 @@
       
       // Add row to table
       const statusClass = stock > 5 ? 'status-completed' : 'status-pending';
-      const statusText = stock > 5 ? 'En Stock' : 'Stock Bajo';
+      const statusText = stock > 5 ? 'In Stock' : 'Low Stock';
       
       const newRow = document.createElement('tr');
       // Add highlight animation class
