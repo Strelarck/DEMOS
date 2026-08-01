@@ -3,109 +3,693 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Restaurante Moderno</title>
+  <title>Bodegón Don Carlos | Parrilla y Comida Casera</title>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  
   <style>
-    :root { --bg:#090909; --card:rgba(255,255,255,.075); --card2:rgba(255,255,255,.04); --text:#fffaf4; --muted:rgba(255,250,244,.72); --accent:#e7b95f; --accent2:#c2410c; --border:rgba(255,255,255,.14); --shadow:0 26px 80px rgba(0,0,0,.45); --radius:26px; }
-    * { box-sizing:border-box; margin:0; padding:0; }
-    html { scroll-behavior:smooth; scroll-padding-top:84px; }
-    body { font-family:"Inter",sans-serif; background: radial-gradient(circle at 15% 15%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 30%), radial-gradient(circle at 85% 20%, color-mix(in srgb, var(--accent2) 20%, transparent), transparent 34%), linear-gradient(180deg,var(--bg),#050505); color:var(--text); line-height:1.65; overflow-x:hidden; }
-    a { color:inherit; text-decoration:none; }
-    .container { width:min(1160px,calc(100% - 40px)); margin:0 auto; }
-    .nav { position:fixed; inset:0 0 auto 0; z-index:20; padding:18px 0; border-bottom:1px solid transparent; transition:.25s ease; }
-    .nav.scrolled { background:rgba(8,8,8,.72); backdrop-filter:blur(18px); border-color:var(--border); padding:12px 0; }
-    .nav-inner { width:min(1220px,calc(100% - 34px)); margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:16px; }
-    .brand { display:flex; align-items:center; gap:12px; font-weight:900; text-transform:uppercase; letter-spacing:.08em; font-size:.82rem; }
-    .mark { width:42px; height:42px; border-radius:15px; display:grid; place-items:center; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#111; box-shadow:0 0 42px color-mix(in srgb,var(--accent) 35%,transparent); }
-    .links { display:flex; gap:18px; list-style:none; }
-    .links a { color:var(--muted); font-size:.88rem; font-weight:800; }
-    .links a:hover { color:var(--accent); }
-    .menu { display:none; width:44px; height:44px; border:1px solid var(--border); background:var(--card2); color:var(--text); border-radius:14px; cursor:pointer; font-weight:900; }
-    .hero { min-height:100vh; display:grid; place-items:center; padding:140px 0 90px; background:linear-gradient(rgba(0,0,0,.36),rgba(0,0,0,.84)), url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=2200&q=80") center/cover fixed; position:relative; isolation:isolate; }
-    .hero::before { content:""; position:absolute; inset:0; z-index:-1; background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px); background-size:72px 72px; mask-image:linear-gradient(to bottom,rgba(0,0,0,.8),transparent 85%); animation:grid 16s linear infinite; }
-    @keyframes grid { from { background-position:0 0; } to { background-position:72px 72px; } }
-    .hero-content { max-width:940px; text-align:center; }
-    .badge { display:inline-flex; padding:10px 16px; border-radius:999px; border:1px solid color-mix(in srgb,var(--accent) 44%,transparent); background:rgba(0,0,0,.36); color:var(--accent); font-weight:900; text-transform:uppercase; letter-spacing:.12em; font-size:.75rem; margin-bottom:24px; backdrop-filter:blur(12px); }
-    h1 { font-family:"Playfair Display",serif; font-size:clamp(3.4rem,9vw,7.8rem); line-height:.88; letter-spacing:-.06em; margin-bottom:24px; }
-    h1 span { color:transparent; background:linear-gradient(135deg,#fff,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; }
-    .hero p { max-width:760px; margin:0 auto 34px; color:var(--muted); font-size:clamp(1rem,2vw,1.22rem); }
-    .btns { display:flex; justify-content:center; gap:14px; flex-wrap:wrap; }
-    .btn { display:inline-flex; justify-content:center; align-items:center; border-radius:999px; padding:14px 22px; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#111; font-weight:900; box-shadow:0 20px 46px color-mix(in srgb,var(--accent) 25%,transparent); transition:transform .25s ease,filter .25s ease; border:0; cursor:pointer; }
-    .btn:hover { transform:translateY(-3px); filter:brightness(1.08); }
-    .btn.secondary { color:var(--text); background:rgba(255,255,255,.06); border:1px solid var(--border); box-shadow:none; }
-    section { padding:100px 0; }
-    .section-head { display:flex; justify-content:space-between; align-items:end; gap:30px; margin-bottom:44px; }
-    .section-head h2 { font-family:"Playfair Display",serif; font-size:clamp(2.2rem,5vw,4.4rem); line-height:.98; letter-spacing:-.045em; }
-    .section-head p { color:var(--muted); max-width:620px; }
-    .about-grid { display:grid; grid-template-columns:1fr .9fr; gap:34px; align-items:center; }
-    .panel { border-radius:var(--radius); background:linear-gradient(180deg,var(--card),var(--card2)); border:1px solid var(--border); box-shadow:var(--shadow); padding:32px; }
-    .panel p { color:var(--muted); margin-bottom:18px; }
-    .image-panel { min-height:470px; border-radius:var(--radius); border:1px solid var(--border); box-shadow:var(--shadow); background:linear-gradient(to top,rgba(0,0,0,.82),transparent),url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=2200&q=80") center/cover; }
-    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
-    .card { border-radius:var(--radius); background:linear-gradient(180deg,var(--card),var(--card2)); border:1px solid var(--border); padding:26px; transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease; }
-    .card:hover { transform:translateY(-8px); border-color:color-mix(in srgb,var(--accent) 55%,transparent); box-shadow:var(--shadow); }
-    .icon { width:56px; height:56px; border-radius:18px; display:grid; place-items:center; background:color-mix(in srgb,var(--accent) 15%,transparent); color:var(--accent); font-size:1.55rem; margin-bottom:22px; }
-    .card h3 { font-family:"Playfair Display",serif; font-size:1.55rem; line-height:1.1; margin-bottom:10px; }
-    .card p { color:var(--muted); }
-    .contact-grid { display:grid; grid-template-columns:.85fr 1.15fr; gap:24px; }
-    form { display:grid; gap:14px; }
-    input,select,textarea { width:100%; border:1px solid var(--border); background:rgba(255,255,255,.06); color:var(--text); border-radius:16px; padding:14px 15px; outline:none; }
-    option { background:#111; }
-    textarea { min-height:120px; resize:vertical; }
-    footer { padding:30px 0; border-top:1px solid var(--border); color:var(--muted); background:rgba(0,0,0,.22); }
-    .footer-inner { display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap; }
-    .reveal { opacity:0; transform:translateY(24px); transition:.75s ease; }
-    .reveal.visible { opacity:1; transform:translateY(0); }
-    @media (max-width:960px) { .links { position:fixed; top:72px; left:18px; right:18px; display:grid; padding:16px; border-radius:22px; background:rgba(10,10,10,.94); border:1px solid var(--border); opacity:0; pointer-events:none; transform:translateY(-16px); transition:.25s ease; } .links.open { opacity:1; pointer-events:auto; transform:translateY(0); } .links a { padding:10px; } .menu { display:block; } .section-head,.about-grid,.contact-grid { display:grid; grid-template-columns:1fr; } .cards { grid-template-columns:repeat(2,1fr); } .image-panel { min-height:350px; } }
-    @media (max-width:620px) { .container { width:min(100% - 26px,1160px); } .hero { background-attachment:scroll; } .cards { grid-template-columns:1fr; } .btns { flex-direction:column; } .btn { width:100%; } }
+    :root { 
+      --bg: #Fdfbf7; 
+      --card: #ffffff; 
+      --text: #332d2b; 
+      --muted: #5e544f; 
+      --accent: #8b2626; 
+      --accent-hover: #6b1d1d;
+      --border: #e0dcd1; 
+      --shadow: 0 4px 18px rgba(0,0,0,0.06); 
+      --radius: 12px; 
+    }
+    
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+    
+    html { 
+      scroll-behavior: smooth; 
+      scroll-padding-top: 84px; 
+    }
+    
+    body { 
+      font-family: "Roboto", sans-serif; 
+      background-color: var(--bg);
+      color: var(--text); 
+      line-height: 1.6; 
+      overflow-x: hidden; 
+    }
+    
+    a { 
+      color: inherit; 
+      text-decoration: none; 
+    }
+    
+    .container { 
+      width: min(1160px, calc(100% - 40px)); 
+      margin: 0 auto; 
+    }
+    
+    .nav { 
+      position: fixed; 
+      inset: 0 0 auto 0; 
+      z-index: 20; 
+      background: var(--bg);
+      padding: 16px 0; 
+      border-bottom: 1px solid var(--border); 
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    }
+    
+    .nav-inner { 
+      width: min(1220px, calc(100% - 34px)); 
+      margin: 0 auto; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+    }
+    
+    .brand { 
+      font-family: "Lora", serif;
+      font-size: 1.4rem;
+      font-weight: 700; 
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+    
+    .links { 
+      display: flex; 
+      gap: 24px; 
+      list-style: none; 
+    }
+    
+    .links a { 
+      color: var(--text); 
+      font-size: 0.95rem; 
+      font-weight: 500; 
+      transition: color 0.2s ease;
+    }
+    
+    .links a:hover { 
+      color: var(--accent); 
+    }
+    
+    .menu { 
+      display: none; 
+      width: 44px; 
+      height: 44px; 
+      border: 1px solid var(--border); 
+      background: var(--card); 
+      color: var(--text); 
+      border-radius: 8px; 
+      cursor: pointer; 
+      font-size: 1.5rem;
+    }
+    
+    .hero { 
+      min-height: 85vh; 
+      display: grid; 
+      place-items: center; 
+      padding: 140px 0 90px; 
+      background-image: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url("https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1600&q=80"); 
+      background-size: cover;
+      background-position: center;
+      color: white;
+      text-align: center;
+    }
+    
+    .hero-content { 
+      max-width: 800px; 
+    }
+    
+    .badge { 
+      display: inline-flex; 
+      padding: 6px 14px; 
+      border-radius: 4px; 
+      background: var(--accent); 
+      color: white; 
+      font-weight: 600; 
+      text-transform: uppercase; 
+      letter-spacing: 0.08em; 
+      font-size: 0.75rem; 
+      margin-bottom: 24px; 
+    }
+    
+    h1 { 
+      font-family: "Lora", serif; 
+      font-size: clamp(2.8rem, 6vw, 5.5rem); 
+      line-height: 1.05; 
+      margin-bottom: 24px; 
+      font-weight: 700;
+    }
+    
+    .hero p { 
+      font-size: clamp(1.1rem, 2vw, 1.4rem); 
+      margin-bottom: 34px; 
+      color: #eaeaea;
+    }
+    
+    .btns { 
+      display: flex; 
+      justify-content: center; 
+      gap: 16px; 
+      flex-wrap: wrap; 
+    }
+    
+    .btn { 
+      display: inline-flex; 
+      justify-content: center; 
+      align-items: center; 
+      border-radius: 6px; 
+      padding: 14px 28px; 
+      background: var(--accent); 
+      color: white; 
+      font-size: 1.05rem;
+      font-weight: 500; 
+      transition: background 0.2s ease; 
+      border: 0; 
+      cursor: pointer; 
+    }
+    
+    .btn:hover { 
+      background: var(--accent-hover); 
+    }
+    
+    .btn.secondary { 
+      background: transparent; 
+      border: 2px solid white; 
+    }
+    
+    .btn.secondary:hover { 
+      background: rgba(255,255,255,0.1); 
+    }
+    
+    section { 
+      padding: 90px 0; 
+    }
+    
+    .section-head { 
+      text-align: center;
+      margin-bottom: 50px; 
+    }
+    
+    .section-head h2 { 
+      font-family: "Lora", serif; 
+      font-size: clamp(2rem, 4vw, 3rem); 
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    
+    .section-head p { 
+      color: var(--muted); 
+      max-width: 650px; 
+      margin: 0 auto;
+      font-size: 1.1rem;
+    }
+    
+    .about-grid { 
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      gap: 50px; 
+      align-items: center; 
+    }
+    
+    .panel { 
+      padding: 10px;
+    }
+    
+    .panel p { 
+      color: var(--muted); 
+      margin-bottom: 18px; 
+      font-size: 1.05rem;
+    }
+    
+    .image-panel { 
+      min-height: 500px; 
+      border-radius: var(--radius); 
+      background: url("https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&w=1000&q=80") center/cover; 
+      box-shadow: var(--shadow);
+    }
+    
+    .cards { 
+      display: grid; 
+      grid-template-columns: repeat(4, 1fr); 
+      gap: 24px; 
+    }
+    
+    .card { 
+      border-radius: var(--radius); 
+      background: var(--card); 
+      border: 1px solid var(--border); 
+      padding: 34px 24px; 
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: transform 0.25s ease; 
+    }
+    
+    .card:hover { 
+      transform: translateY(-5px); 
+    }
+    
+    .icon { 
+      font-size: 2.5rem; 
+      margin-bottom: 20px; 
+    }
+    
+    .card h3 { 
+      font-family: "Lora", serif; 
+      font-size: 1.3rem; 
+      color: var(--text);
+      margin-bottom: 12px; 
+    }
+    
+    .card p { 
+      color: var(--muted); 
+      font-size: 0.95rem;
+    }
+    
+    .contact-bg {
+      background-color: white;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .contact-grid { 
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      gap: 60px; 
+    }
+    
+    .contact-info p {
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .contact-info strong {
+      color: var(--accent);
+      min-width: 90px;
+    }
+    
+    form { 
+      display: grid; 
+      gap: 18px; 
+    }
+    
+    input, select, textarea { 
+      width: 100%; 
+      border: 1px solid var(--border); 
+      background: var(--bg); 
+      color: var(--text); 
+      border-radius: 6px; 
+      padding: 14px 15px; 
+      outline: none; 
+      font-family: "Roboto", sans-serif;
+    }
+    
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+    }
+    
+    textarea { 
+      min-height: 120px; 
+      resize: vertical; 
+    }
+    
+    footer { 
+      padding: 40px 0; 
+      background: #2c2724;
+      color: #9c948e; 
+      text-align: center;
+    }
+    
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px 40px;
+    }
+    
+    .menu-category h3 {
+      font-family: "Lora", serif;
+      font-size: 1.8rem;
+      color: var(--accent);
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+    }
+    
+    .menu-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .menu-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px;
+    }
+    
+    .menu-item-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    
+    .menu-item-price {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    
+    .menu-item-desc {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    
+    @media (max-width: 960px) {
+      .links { 
+        position: fixed; 
+        top: 76px; 
+        left: 0; 
+        right: 0; 
+        display: grid; 
+        background: var(--card); 
+        padding: 20px; 
+        border-bottom: 1px solid var(--border); 
+        box-shadow: var(--shadow);
+        gap: 16px;
+        opacity: 0; 
+        pointer-events: none; 
+        transform: translateY(-10px); 
+        transition: 0.25s ease; 
+      } 
+      
+      .links.open { 
+        opacity: 1; 
+        pointer-events: auto; 
+        transform: translateY(0); 
+      } 
+      
+      .menu { 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      } 
+      
+      .about-grid, .contact-grid { 
+        grid-template-columns: 1fr; 
+        gap: 30px;
+      } 
+      
+      .cards { 
+        grid-template-columns: repeat(2, 1fr); 
+      } 
+      
+      .image-panel { 
+        min-height: 350px; 
+      } 
+    }
+    
+    @media (max-width: 620px) { 
+      .cards { 
+        grid-template-columns: 1fr; 
+      } 
+      
+      .btns { 
+        flex-direction: column; 
+      } 
+      
+      .btn { 
+        width: 100%; 
+      } 
+    }
   </style>
 </head>
 <body>
   <nav class="nav" id="nav">
     <div class="nav-inner">
-      <a class="brand" href="#inicio"><span class="mark">✦</span><span>Restaurante moderno</span></a>
-      <ul class="links" id="links"><li><a href="#inicio">Inicio</a></li><li><a href="#nosotros">Nosotros</a></li><li><a href="#servicios">Servicios</a></li><li><a href="#contacto">Contacto</a></li></ul>
+      <a class="brand" href="#inicio">Bodegón Don Carlos</a>
+      <ul class="links" id="links">
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#nosotros">Nuestra Esencia</a></li>
+        <li><a href="#especialidades">Especialidades</a></li>
+        <li><a href="#menu">Menú</a></li>
+        <li><a href="#contacto">Reservas</a></li>
+      </ul>
       <button class="menu" id="menuBtn">☰</button>
     </div>
   </nav>
-  <section class="hero" id="inicio"><div class="container hero-content reveal"><div class="badge">Restaurante moderno</div><h1>Restaurante Moderno <span>premium</span>.</h1><p>Una landing gastronómica elegante, visual y directa, pensada para reservas, carta digital y contacto rápido.</p><div class="btns"><a class="btn" href="#contacto">Solicitar información</a><a class="btn secondary" href="#servicios">Ver servicios</a></div></div></section>
-  <section id="nosotros"><div class="container about-grid"><div class="panel reveal"><div class="badge">Quiénes somos</div><h2>Una demo pensada para vender mejor.</h2><p>Este template está armado para mostrar una presencia web moderna, clara y comercial. La estructura se puede adaptar a datos reales, servicios, precios, imágenes y contacto.</p><p>La idea es que el cliente vea una web terminada, no un boceto: estética cuidada, navegación simple, llamadas a la acción y secciones listas para convertir consultas.</p></div><div class="image-panel reveal"></div></div></section>
-  <section id="servicios"><div class="container"><div class="section-head reveal"><div><div class="badge">Servicios</div><h2>Secciones comerciales listas para usar.</h2></div><p>Cards pensadas para comunicar servicios, beneficios o productos de forma visual y directa.</p></div><div class="cards">
-        <article class="card reveal">
-          <div class="icon">🍽️</div>
-          <h3>Carta de autor</h3>
-          <p>Platos modernos con presentación cuidada y sabores de temporada.</p>
+
+  <section class="hero" id="inicio">
+    <div class="container hero-content">
+      <div class="badge">Parrilla y Comida Casera</div>
+      <h1>Comida rica, abundante y en familia.</h1>
+      <p>Un clásico rincón donde los sabores tradicionales y el buen vino se encuentran para compartir grandes momentos.</p>
+      <div class="btns">
+        <a class="btn" href="#contacto">Hacer una reserva</a>
+        <a class="btn secondary" href="#especialidades">Ver especialidades</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="nosotros">
+    <div class="container about-grid">
+      <div class="panel">
+        <div class="section-head" style="text-align: left; margin-bottom: 24px;">
+          <h2>Nuestra Esencia</h2>
+        </div>
+        <p>Somos un bodegón tradicional con años de historia sirviendo platos como los hacía la abuela. No buscamos reinventar la gastronomía, sino honrarla con porciones generosas, ingredientes frescos y fuego de leña.</p>
+        <p>Nuestra parrilla siempre está prendida, nuestras milanesas son para compartir y la atención es directa, amable y familiar. Queremos que te sientas como en el comedor de tu casa, pero sin tener que lavar los platos.</p>
+      </div>
+      <div class="image-panel"></div>
+    </div>
+  </section>
+
+  <section id="especialidades" style="background-color: #f7f3eb; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div class="container">
+      <div class="section-head">
+        <h2>Clásicos de Siempre</h2>
+        <p>Los platos que nos hicieron famosos y que la gente elige todos los domingos.</p>
+      </div>
+      
+      <div class="cards">
+        <article class="card">
+          <div class="icon">🥩</div>
+          <h3>Parrilla al carbón</h3>
+          <p>Cortes seleccionados, achuras y el clásico asado de tira hecho lentamente al fuego.</p>
         </article>
 
-        <article class="card reveal">
+        <article class="card">
+          <div class="icon">🍝</div>
+          <h3>Pastas Caseras</h3>
+          <p>Ravioles, fideos y ñoquis amasados a mano con estofado mixto o salsa boloñesa.</p>
+        </article>
+
+        <article class="card">
           <div class="icon">🍷</div>
-          <h3>Wine bar</h3>
-          <p>Selección de vinos y cocktails para acompañar cada plato.</p>
+          <h3>Vinos y Bodega</h3>
+          <p>Una cuidada selección de tintos tradicionales para acompañar nuestras carnes.</p>
         </article>
 
-        <article class="card reveal">
-          <div class="icon">📅</div>
-          <h3>Reservas online</h3>
-          <p>Formulario visual para solicitar mesa en pocos pasos.</p>
+        <article class="card">
+          <div class="icon">🍮</div>
+          <h3>Postres Clásicos</h3>
+          <p>Flan mixto, fresco y batata, panqueques de dulce de leche o budín de pan.</p>
         </article>
+      </div>
+    </div>
+  </section>
 
-        <article class="card reveal">
-          <div class="icon">🎉</div>
-          <h3>Eventos privados</h3>
-          <p>Espacio para cumpleaños, cenas empresariales y celebraciones.</p>
-        </article></div></div></section>
-  <section id="contacto"><div class="container contact-grid"><div class="panel reveal"><div class="badge">Contacto</div><h2>Contacto directo</h2><p><strong>Dirección:</strong> Av. Demo 1234, CABA</p><p><strong>Teléfono:</strong> +54 11 5555-5555</p><p><strong>Email:</strong> contacto@demo.com</p><p><strong>Horarios:</strong> Lunes a sábado · 9:00 a 20:00</p></div><div class="panel reveal"><form id="demoForm"><input type="text" placeholder="Nombre" required><input type="email" placeholder="Email" required><select required><option value="">Motivo de consulta</option><option>Solicitar presupuesto</option><option>Reservar turno</option><option>Consultar disponibilidad</option></select><textarea placeholder="Mensaje" required></textarea><button class="btn" type="submit">Enviar consulta</button></form></div></div></section>
-  <footer><div class="container footer-inner"><span>© 2026 Alexander Fath. Todos los derechos reservados.</span><span>Desarrollado por Alexander Fath</span></div></footer>
+  <section id="menu">
+    <div class="container">
+      <div class="section-head">
+        <h2>Nuestro Menú</h2>
+        <p>Precios actualizados y porciones súper abundantes.</p>
+      </div>
+
+      <div class="menu-grid">
+        <div class="menu-category">
+          <h3>Minutas</h3>
+          <ul class="menu-list">
+            <li>
+              <div class="menu-item-header">
+                <span class="menu-item-name">Milanesa Napolitana con fritas</span>
+                <span class="menu-item-price">$14.500</span>
+              </div>
+              <p class="menu-item-desc">Para compartir, abundante mozzarella y salsa fileto.</p>
+            </li>
+            <li>
+              <div class="menu-item-header">
+                <span class="menu-item-name">Suprema Suiza con puré</span>
+                <span class="menu-item-price">$13.800</span>
+              </div>
+              <p class="menu-item-desc">Gratinada con queso suizo y crema.</p>
+            </li>
+            <li>
+              <div class="menu-item-header">
+                <span class="menu-item-name">Bife de Chorizo a caballo</span>
+                <span class="menu-item-price">$18.000</span>
+              </div>
+              <p class="menu-item-desc">Corte grueso de 400gr con dos huevos fritos y guarnición.</p>
+            </li>
+          </ul>
+        </div>
+
+        <div class="menu-category">
+          <h3>Pastas Caseras</h3>
+          <ul class="menu-list">
+            <li>
+              <div class="menu-item-header">
+                <span class="menu-item-name">Ñoquis de Papa</span>
+                <span class="menu-item-price">$9.500</span>
+              </div>
+              <p class="menu-item-desc">Con salsa boloñesa, estofado o fileto a elección.</p>
+            </li>
+            <li>
+              <div class="menu-item-header">
+                <span class="menu-item-name">Ravioles de Ricota y Nuez</span>
+                <span class="menu-item-price">$10.200</span>
+              </div>
+              <p class="menu-item-desc">Masa casera, servidos con crema o salsa rosa.</p>
+            </li>
+            <li>
+              <div class="menu-item-header">
+                <span class="menu-item-name">Canelones de Verdura y Carne</span>
+                <span class="menu-item-price">$11.500</span>
+              </div>
+              <p class="menu-item-desc">Gratinados al horno con salsa blanca y queso parmesano.</p>
+            </li>
+          </ul>
+        </div>
+
+        <div class="menu-category">
+          <h3>Dulces y Postres</h3>
+          <ul class="menu-list">
+            <li>
+              <div class="menu-item-header">
+                <span class="menu-item-name">Flan Casero Mixto</span>
+                <span class="menu-item-price">$4.500</span>
+              </div>
+              <p class="menu-item-desc">Receta de la abuela, con abundante dulce de leche y crema.</p>
+            </li>
+            <li>
+              <div class="menu-item-header">
+                <span class="menu-item-name">Fresco y Batata</span>
+                <span class="menu-item-price">$4.000</span>
+              </div>
+              <p class="menu-item-desc">El clásico vigilante argentino.</p>
+            </li>
+            <li>
+              <div class="menu-item-header">
+                <span class="menu-item-name">Panqueques de Dulce de Leche</span>
+                <span class="menu-item-price">$5.200</span>
+              </div>
+              <p class="menu-item-desc">Quemados al rhum, porción doble.</p>
+            </li>
+          </ul>
+        </div>
+
+        <div class="menu-category">
+          <h3>Cafetería</h3>
+          <ul class="menu-list">
+            <li>
+              <div class="menu-item-header">
+                <span class="menu-item-name">Café Espresso / Cortado</span>
+                <span class="menu-item-price">$2.000</span>
+              </div>
+            </li>
+            <li>
+              <div class="menu-item-header">
+                <span class="menu-item-name">Café con Leche / Lágrima</span>
+                <span class="menu-item-price">$2.500</span>
+              </div>
+            </li>
+            <li>
+              <div class="menu-item-header">
+                <span class="menu-item-name">Té o Mate Cocido</span>
+                <span class="menu-item-price">$1.800</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto" class="contact-bg">
+    <div class="container contact-grid">
+      <div class="panel">
+        <div class="section-head" style="text-align: left; margin-bottom: 24px;">
+          <h2>Hacé tu Reserva</h2>
+        </div>
+        <div class="contact-info">
+          <p><strong>Dirección:</strong> Av. Corrientes 4500, Almagro</p>
+          <p><strong>Teléfono:</strong> 011 4800-1234</p>
+          <p><strong>Email:</strong> reservas@bodegondoncarlos.com</p>
+          <p><strong>Horarios:</strong> Mar a Dom · 12:00 a 16:00 y 20:00 a 00:00</p>
+        </div>
+      </div>
+      
+      <div class="panel">
+        <form id="demoForm">
+          <input type="text" placeholder="Nombre completo" required>
+          <input type="text" placeholder="Teléfono" required>
+          <select required>
+            <option value="">Cantidad de comensales</option>
+            <option>2 personas</option>
+            <option>3 a 4 personas</option>
+            <option>5 a 8 personas</option>
+            <option>Más de 8 personas</option>
+          </select>
+          <textarea placeholder="Comentarios o solicitudes especiales (opcional)"></textarea>
+          <button class="btn" type="submit">Enviar Reserva</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>Bodegón Don Carlos © 2026. Todos los derechos reservados.</p>
+      <p style="margin-top: 8px; font-size: 0.85rem;">Demo desarrollada por Alexander Fath</p>
+    </div>
+  </footer>
+
   <script>
-    const nav=document.getElementById('nav'),links=document.getElementById('links'),menuBtn=document.getElementById('menuBtn');
-    window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40)});
-    menuBtn.addEventListener('click',()=>{links.classList.toggle('open')});
-    document.querySelectorAll('.links a').forEach(link=>{link.addEventListener('click',()=>links.classList.remove('open'))});
-    const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}})},{threshold:.14});
-    document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
-    document.getElementById('demoForm').addEventListener('submit',e=>{e.preventDefault();alert('Consulta enviada correctamente. Esta es una demo visual.');e.target.reset();});
+    const nav = document.getElementById('nav');
+    const links = document.getElementById('links');
+    const menuBtn = document.getElementById('menuBtn');
+    
+    // Smooth navbar background
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        nav.style.boxShadow = '0 4px 20px rgba(0,0,0,0.06)';
+      } else {
+        nav.style.boxShadow = '0 2px 10px rgba(0,0,0,0.03)';
+      }
+    });
+    
+    // Mobile menu
+    menuBtn.addEventListener('click', () => {
+      links.classList.toggle('open');
+    });
+    
+    document.querySelectorAll('.links a').forEach(link => {
+      link.addEventListener('click', () => links.classList.remove('open'));
+    });
+    
+    // Form submission
+    document.getElementById('demoForm').addEventListener('submit', e => {
+      e.preventDefault();
+      alert('Reserva solicitada. Nos contactaremos para confirmar.');
+      e.target.reset();
+    });
   </script>
 </body>
 </html>
