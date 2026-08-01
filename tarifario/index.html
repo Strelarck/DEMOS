@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarifario Interno | Alexander Fath</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #09090B; /* Zinc 950 */
+      --bg-card: #18181B; /* Zinc 900 */
+      --text: #FAFAFA;
+      --text-muted: #A1A1AA;
+      --border: #27272A;
+      --accent: #3B82F6; /* Blue 500 */
+      --accent-hover: #2563EB;
+      --success: #10B981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 24px;
+      background-image: 
+        radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.08), transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.08), transparent 25%);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 60px;
+      max-width: 600px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      color: var(--text-muted);
+    }
+
+    .header h1 {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 1200px;
+      width: 100%;
+      align-items: start;
+    }
+
+    .pricing-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .pricing-card.popular {
+      background: linear-gradient(180deg, #18181B 0%, #09090B 100%);
+      border: 1px solid var(--accent);
+      box-shadow: 0 20px 40px rgba(59, 130, 246, 0.1);
+      transform: scale(1.02);
+    }
+
+    .pricing-card.popular:hover {
+      transform: scale(1.02) translateY(-4px);
+    }
+
+    .popular-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: white;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .plan-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .plan-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      min-height: 44px;
+    }
+
+    .price-wrap {
+      margin-bottom: 8px;
+    }
+
+    .price {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+    
+    .price span {
+      font-size: 1.5rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    
+    .price-currency {
+      font-size: 2rem;
+      vertical-align: top;
+      margin-right: 4px;
+      color: var(--text-muted);
+    }
+
+    .monthly-fee {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .features {
+      list-style: none;
+      flex-grow: 1;
+      margin-bottom: 32px;
+    }
+
+    .features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+      font-size: 0.95rem;
+      color: #D4D4D8;
+    }
+
+    .features li svg {
+      width: 20px;
+      height: 20px;
+      color: var(--success);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    
+    .features li.not-included {
+      color: #52525B;
+    }
+    
+    .features li.not-included svg {
+      color: #52525B;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 16px 24px;
+      border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    @media (max-width: 1024px) {
+      .pricing-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .pricing-card:last-child {
+        grid-column: span 2;
+        max-width: 50%;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+      .pricing-card.popular {
+        transform: scale(1);
+      }
+      .pricing-card.popular:hover {
+        transform: translateY(-4px);
+      }
+      .pricing-card:last-child {
+        grid-column: 1;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="badge">Uso Interno</div>
+    <h1>Planes y Precios</h1>
+    <p>Tarifario base actualizado a Agosto 2026. Precios en Pesos Argentinos (ARS) para referencia comercial interna.</p>
+  </div>
+
+  <div class="pricing-grid">
+    
+    <!-- Plan Inicial -->
+    <div class="pricing-card">
+      <h3 class="plan-name">Inicial (Presencia)</h3>
+      <p class="plan-desc">Perfecto para negocios que necesitan estar en internet y mostrar sus precios.</p>
+      
+      <div class="price-wrap">
+        <div class="price"><span class="price-currency">$</span>250<span>k</span></div>
+      </div>
+      <div class="monthly-fee">+ $35.000 / mes (Mantenimiento)</div>
+      
+      <ul class="features">
+        <li>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+          <span>Página web (Landing Page) moderna</span>
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+          <span>Cartilla de precios simple</span>
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+          <span>Edición de precios <strong>1 vez al mes</strong></span>
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+          <span>Hosting y Dominio incluidos</span>
+        </li>
+        <li class="not-included">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+          <span>Sistema de Carrito o Pedidos</span>
+        </li>
+        <li class="not-included">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+          <span>Gestión de Stock / Dashboard</span>
+        </li>
+      </ul>
+      
+      <button class="btn">Copiar Resumen</button>
+    </div>
+
+    <!-- Plan Avanzado (Popular) -->
+    <div class="pricing-card popular">
+      <div class="popular-badge">Recomendado</div>
+      <h3 class="plan-name">Avanzado (Comercio)</h3>
+      <p class="plan-desc">El equilibrio ideal. Para locales con flujo diario de pedidos y reservas.</p>
+      
+      <div class="price-wrap">
+        <div class="price"><span class="price-currency">$</span>450<span>k</span></div>
+      </div>
+      <div class="monthly-fee">+ $45.000 / mes (Mantenimiento)</div>
+      
+      <ul class="features">
+        <li>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+          <span>Todo lo del Plan Inicial</span>
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+          <span>Edición de precios <strong>2 veces al mes</strong></span>
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+          <span><strong>Sistema de Pedidos tipo Carrito</strong></span>
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+          <span>Integración de cobro en local/transferencia</span>
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+          <span>Mantenimiento y Soporte Prioritario</span>
+        </li>
+        <li class="not-included">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+          <span>Panel de Gestión de Stock</span>
+        </li>
+      </ul>
+      
+      <button class="btn btn-primary">Copiar Resumen</button>
+    </div>
+
+    <!-- Plan Pro -->
+    <div class="pricing-card">
+      <h3 class="plan-name">Pro (Gestión Total)</h3>
+      <p class="plan-desc">Solución completa para control absoluto de mercadería, estadísticas y ventas.</p>
+      
+      <div class="price-wrap">
+        <div class="price"><span class="price-currency">$</span>850<span>k</span></div>
+      </div>
+      <div class="monthly-fee">+ $60.000 / mes (Mantenimiento)</div>
+      
+      <ul class="features">
+        <li>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+          <span>Todo lo del Plan Avanzado</span>
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+          <span>Edición <strong>ilimitada</strong> por el propio cliente</span>
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+          <span><strong>Dashboard Administrativo</strong> Privado</span>
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+          <span>Sistema de gestión y edición de Stock</span>
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+          <span>Registro de últimas ventas del mes</span>
+        </li>
+        <li>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+          <span>Soporte técnico 24/7 de alta prioridad</span>
+        </li>
+      </ul>
+      
+      <button class="btn">Copiar Resumen</button>
+    </div>
+
+  </div>
+
+  <script>
+    // Funcionalidad simple para copiar resumen y enviarlo fácil a los clientes
+    document.querySelectorAll('.pricing-card').forEach(card => {
+      const btn = card.querySelector('button');
+      btn.addEventListener('click', () => {
+        const name = card.querySelector('.plan-name').innerText;
+        const price = card.querySelector('.price').innerText.replace(/\n/g, '').trim();
+        const monthly = card.querySelector('.monthly-fee').innerText;
+        const features = Array.from(card.querySelectorAll('.features li:not(.not-included) span'))
+                              .map(li => '- ' + li.innerText).join('\n');
+                              
+        const text = `Hola! Te comparto los detalles del *Plan ${name}*:\n\n*Desarrollo:* ${price} ARS\n*Mantenimiento:* ${monthly.replace('+ ', '').replace(' (Mantenimiento)', '')}\n\n*Incluye:*\n${features}\n\nAvisame qué te parece y avanzamos!`;
+        
+        navigator.clipboard.writeText(text).then(() => {
+          const originalText = btn.innerText;
+          btn.innerText = '¡Resumen Copiado!';
+          btn.style.backgroundColor = 'var(--success)';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'white';
+          
+          setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.backgroundColor = '';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
